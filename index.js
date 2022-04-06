@@ -36,27 +36,38 @@ console.log(season);
 
 	const filteredGarments = garments.filter(garment => {
 
-        
-		// if both gender & season was supplied
-        // console.log(gender!= 'ALL' && season != 'ALL');
-		// if (gender != 'ALL') {
-        //     return garment.gender === gender   
-        // }else if(season != 'ALL'){
-        //     return garment.season === season
-        // } else
-        
-        if(gender!= 'ALL' && season != 'ALL'){
-            console.log('season and gender');
-             return garment.gender === gender && garment.season === season
-        }else if(season != 'ALL'){
-                return garment.season === season
-            }
+
+        if (gender != 'All' && season != 'All') {
+			return garment.gender === gender 
+				&& garment.season === season;
+		} else if(gender != 'All') { // if gender was supplied
+			return garment.gender === gender
+		} else if(season != 'All') { // if season was supplied
+			return garment.season === season
+		}
+		return true;
+
         
 	});
 
-    // console.log(filteredGarments);
-	// note that this route just send JSON data to the browser
-	// there is no template
+
+	res.json({ 
+		garments : filteredGarments
+	});
+});
+
+
+
+app.get('/api/garments/price/:price', function(req, res){
+	const maxPrice = Number(req.params.price);
+	const filteredGarments = garments.filter( garment => {
+		// filter only if the maxPrice is bigger than maxPrice
+		if (maxPrice > 0) {
+			return garment.price <= maxPrice;
+		}
+		return true;
+	});
+
 	res.json({ 
 		garments : filteredGarments
 	});
